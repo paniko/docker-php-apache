@@ -1,6 +1,7 @@
 version: '2'
 
 services:
+
     php:
       build:
         dockerfile: ./docker/serverweb/Dockerfile
@@ -9,5 +10,17 @@ services:
         - "8080:80"
       volumes:
         - ./www:/var/www/site
+      links:
+        - db
       privileged: true
       restart: always
+
+    db:
+        image: mysql:latest
+        ports: 
+          - "3307:3306"
+        volumes:
+          - ./db:/var/lib/mysql
+        environment:
+          - MYSQL_ROOT_PASSWORD=docker
+          - MYSQL_DATABASE=db_runwaytest
