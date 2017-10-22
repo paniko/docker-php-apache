@@ -9,18 +9,20 @@ services:
       ports:
         - "8080:80"
       volumes:
-        - ./www:/var/www/site
+        - ./www:/web/virtualhosts
       links:
-        - db
+        - db:mariadb
       privileged: true
       restart: always
 
     db:
-        image: mysql:latest
+        image: mariadb:latest
         ports: 
           - "3307:3306"
         volumes:
           - ./db:/var/lib/mysql
         environment:
-          - MYSQL_ROOT_PASSWORD=docker
-          - MYSQL_DATABASE=db_runwaytest
+          MYSQL_ROOT_PASSWORD: docker
+          MYSQL_DATABASE: mydb
+          MYSQL_USER: userdb
+          MYSQL_PASSWORD: secret
